@@ -1,0 +1,180 @@
+:root {
+  --bg: #10111e;
+  --ink: #1a1c2c;
+  --line: #333c57;
+  --text: #c2c9d6;
+  --gold: #ffcd75;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  overscroll-behavior: none;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+#game {
+  display: block;
+  background: var(--ink);
+  touch-action: none;
+  cursor: pointer;
+  /* Keep pixels hard when the browser scales the canvas. */
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  box-shadow: 0 0 0 2px var(--line), 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+#bar {
+  position: fixed;
+  right: max(8px, env(safe-area-inset-right));
+  bottom: max(8px, env(safe-area-inset-bottom));
+  display: flex;
+  gap: 6px;
+  z-index: 3;
+}
+
+#bar button {
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text);
+  background: var(--ink);
+  border: 2px solid var(--line);
+  padding: 6px 10px;
+  min-width: 40px;
+  min-height: 32px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#bar button:hover,
+#bar button:focus-visible {
+  color: var(--gold);
+  border-color: var(--gold);
+  outline: none;
+}
+
+#touch {
+  display: none;
+}
+
+/* Touch layout: pad and button sit right under the screen in portrait. */
+body.touch #touch {
+  display: flex;
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 480px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px 56px;
+}
+
+body.touch #bar {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+#pad {
+  position: relative;
+  width: min(38vw, 150px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #232842 0%, #1a1c2c 70%);
+  border: 2px solid var(--line);
+  touch-action: none;
+}
+
+#stick {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #566c86;
+  border: 2px solid #8a93a8;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#btn-a {
+  width: min(26vw, 96px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--gold);
+  border: 3px solid #f2a63c;
+  box-shadow: 0 5px 0 #a8703a;
+  touch-action: none;
+}
+
+#btn-a.down {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #a8703a;
+}
+
+/* Landscape phones: controls float over the sides of the screen. */
+@media (orientation: landscape) {
+  body.touch #app {
+    justify-content: center;
+  }
+
+  body.touch #touch {
+    position: fixed;
+    inset: 0;
+    max-width: none;
+    align-items: flex-end;
+    padding: 0 max(18px, env(safe-area-inset-right)) 22px max(18px, env(safe-area-inset-left));
+    pointer-events: none;
+  }
+
+  body.touch #pad,
+  body.touch #btn-a {
+    pointer-events: auto;
+    opacity: 0.85;
+  }
+
+  #pad {
+    width: min(38vh, 150px);
+  }
+
+  #btn-a {
+    width: min(28vh, 100px);
+  }
+
+  body.touch #bar {
+    left: auto;
+    right: max(8px, env(safe-area-inset-right));
+    top: max(8px, env(safe-area-inset-top));
+    bottom: auto;
+    transform: none;
+  }
+}

@@ -1,0 +1,9 @@
+node_modules
+dist
+.agent-browser
+*.log
+.DS_Store
+
+# Local notes, kept out of the repo
+BRIEF.md
+SUMMARY.md
